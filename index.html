@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to 12 AM WAT</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1b1b1b;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        #countdown {
+            font-size: 3em;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        .firework {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #ff5733;
+            border-radius: 50%;
+            opacity: 0;
+            animation: firework 2s ease-out infinite;
+        }
+        .footer-text {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 18px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, sans-serif;
+    color: #f7f4f4;
+}
+
+        @keyframes firework {
+            0% {
+                transform: scale(0) translateY(0) rotate(0);
+                opacity: 0;
+            }
+            25% {
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5) translateY(-150px) rotate(180deg);
+                opacity: 1;
+            }
+            75% {
+                transform: scale(1) translateY(-250px) rotate(360deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0) translateY(0) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Random position and animation delays */
+        .firework:nth-child(odd) {
+            animation-delay: calc(0.5s * var(--delay));
+        }
+
+        .firework:nth-child(even) {
+            animation-delay: calc(0.7s * var(--delay));
+        }
+    </style>
+</head>
+<body>
+    <div id="countdown"></div>
+    <div class="footer-text">Oyindolapoh</div>
+
+    
+
+    <script>
+        // Function to generate random fireworks at different positions
+        function createFireworks() {
+            const fireworkCount = 30; // Number of fireworks
+            const fireworkContainer = document.body;
+
+            for (let i = 0; i < fireworkCount; i++) {
+                const firework = document.createElement('div');
+                firework.classList.add('firework');
+                
+                // Randomize position
+                const posX = Math.random() * 100 + '%';
+                const posY = Math.random() * 100 + '%';
+                firework.style.left = posX;
+                firework.style.top = posY;
+
+                // Random delay for animation
+                firework.style.setProperty('--delay', Math.random() * 10);
+
+                fireworkContainer.appendChild(firework);
+            }
+        }
+
+        // Update the countdown timer
+        function updateCountdown() {
+            const now = new Date();
+            const targetTime = new Date();
+            targetTime.setHours(24, 0, 0, 0); // Set to 12 AM (midnight)
+
+            const timeRemaining = targetTime - now;
+
+            if (timeRemaining <= 0) {
+                document.getElementById("countdown").innerHTML = "Time's up!";
+                window.location.href = "new_year.html"; // Redirect to happynew.html
+                return;
+            }
+
+            const hours = Math.floor(timeRemaining / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerHTML = 
+                `${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        // Start fireworks and countdown
+        createFireworks();
+        setInterval(updateCountdown, 1000); // Update the countdown every second
+        updateCountdown(); // Initialize the countdown immediately
+    </script>
+</body>
+</html>
